@@ -15,22 +15,46 @@ function determineLocation(locale) {
     }
 }
 
-var template2 = React.createElement(
-    'div',
-    null,
-    React.createElement(
-        'h1',
-        null,
-        user.name ? user.name : 'Unknown'
-    ),
-    user.age > 18 && React.createElement(
-        'p',
-        null,
-        'Age: ',
-        user.age
-    ),
-    determineLocation(user.locale)
-);
+var count = 0;
+var addOne = function addOne() {
+    count++;renderCounterApp();
+};
+var minusOne = function minusOne() {
+    count--;renderCounterApp();
+};
+var reset = function reset() {
+    count = 0;renderCounterApp();
+};
 
 var appRoot = document.getElementById('app');
-ReactDOM.render(template2, appRoot);
+var renderCounterApp = function renderCounterApp() {
+    var counterUI = React.createElement(
+        'div',
+        null,
+        React.createElement(
+            'h1',
+            null,
+            'Count: ',
+            count
+        ),
+        React.createElement(
+            'button',
+            { onClick: addOne },
+            '+1'
+        ),
+        '\xA0',
+        React.createElement(
+            'button',
+            { onClick: minusOne },
+            '-1'
+        ),
+        '\xA0',
+        React.createElement(
+            'button',
+            { onClick: reset },
+            'reset'
+        )
+    );
+    ReactDOM.render(counterUI, appRoot);
+};
+renderCounterApp();

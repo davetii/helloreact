@@ -6,13 +6,26 @@ function determineLocation(locale) {
     if (locale) { return <p>Location: {locale}</p>; }
 }
 
-var template2 = (
-    <div>
-        <h1>{user.name ? user.name : 'Unknown'}</h1>
-        {user.age > 18 && <p>Age: {user.age}</p>}
-        {determineLocation(user.locale)}
-    </div>
-)
+let count = 0;
+const addOne = () => { count++; renderCounterApp(); }
+const minusOne = () => { count--; renderCounterApp();}
+const reset = () => { count = 0; renderCounterApp(); }
 
-var appRoot = document.getElementById('app');
-ReactDOM.render(template2, appRoot);
+
+const appRoot = document.getElementById('app');
+const renderCounterApp = () => {
+    const counterUI = (
+        <div>
+            <h1>Count: {count}</h1>
+            <button onClick={addOne}>+1</button>
+            &nbsp;
+            <button onClick={minusOne}>-1</button>
+            &nbsp;
+            <button onClick={reset}>reset</button>
+        </div>
+
+    );
+    ReactDOM.render(counterUI, appRoot);
+}
+renderCounterApp();
+
