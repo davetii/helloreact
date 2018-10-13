@@ -85,6 +85,22 @@ class IndecisionApp extends React.Component {
         this.state = { items : [] }
     }
 
+    componentDidMount() {
+        const items = JSON.parse(localStorage.getItem('items'));
+        if(items) {
+            this.setState(() => ({ items }));
+        }
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate');
+        if(prevState.items.length != this.state.items.length) {
+            localStorage.setItem('items', JSON.stringify(this.state.items));
+            console.log('saving data');
+        }
+    }
+
     handleDeleteOptions() {
         this.setState(() => ({ items: [] }));
     };
@@ -95,7 +111,6 @@ class IndecisionApp extends React.Component {
                 return itemToRemove !== item;
             })
         }));
-        //console.log('onDeleteOption', item)
     }
 
     onPick() {
@@ -110,11 +125,8 @@ class IndecisionApp extends React.Component {
 
     render() {
         return <div>
-            <Header />
-            <Action
-                hasOptions={this.state.items.length > 0}
-                onPick={this.onPick}
-            />
+            <Header title="Indecion App"/>
+            <Action hasOptions={this.state.items.length > 0} onPick={this.onPick} />
             <Options
                 items={this.state.items}
                 handleDeleteOptions={this.handleDeleteOptions}

@@ -138,6 +138,27 @@ var IndecisionApp = function (_React$Component2) {
     }
 
     _createClass(IndecisionApp, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log('componentDidMount');
+            var items = JSON.parse(localStorage.getItem('items'));
+            console.log(items, items);
+            if (items) {
+                this.setState(function () {
+                    return { items: items };
+                });
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            console.log('componentDidUpdate');
+            if (prevState.items.length != this.state.items.length) {
+                localStorage.setItem('items', JSON.stringify(this.state.items));
+                console.log('saving data');
+            }
+        }
+    }, {
         key: 'handleDeleteOptions',
         value: function handleDeleteOptions() {
             this.setState(function () {
@@ -154,7 +175,6 @@ var IndecisionApp = function (_React$Component2) {
                     })
                 };
             });
-            //console.log('onDeleteOption', item)
         }
     }, {
         key: 'onPick',
@@ -180,11 +200,8 @@ var IndecisionApp = function (_React$Component2) {
             return React.createElement(
                 'div',
                 null,
-                React.createElement(Header, null),
-                React.createElement(Action, {
-                    hasOptions: this.state.items.length > 0,
-                    onPick: this.onPick
-                }),
+                React.createElement(Header, { title: 'Indecion App' }),
+                React.createElement(Action, { hasOptions: this.state.items.length > 0, onPick: this.onPick }),
                 React.createElement(Options, {
                     items: this.state.items,
                     handleDeleteOptions: this.handleDeleteOptions,
