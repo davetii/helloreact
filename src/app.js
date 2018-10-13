@@ -7,11 +7,16 @@ const Header = (props) => {
     );
 };
 
-Header.defaultProps = { title: 'My default Title', subtitle: 'My default Subtite' }
+Header.defaultProps = { title: 'My default Title', subtitle: 'My default subtitle' }
 
 const Option = (props) => {
     return (
-        <div>{props.text}</div>
+        <div>
+            {props.text}
+            <button onClick={(e) => {
+                props.onDeleteItem(props.text);
+            }}>remove item</button>
+        </div>
     );
 };
 
@@ -20,7 +25,11 @@ const Options = (props) => {
         <div>
             <button onClick={props.handleDeleteOptions}>Remove All</button>
             {
-                props.items.map((o) => <Option text={o} />)
+                props.items.map((o) => (
+                    <Option key={o} text={o}
+                            onDeleteItem={props.onDeleteItem}
+                    />
+                ))
             }
         </div>
     );
@@ -50,9 +59,7 @@ class AddOption extends React.Component {
         e.preventDefault();
         const error = this.props.onAddOption(e.target.option.value.trim());
         e.target.option.value = '';
-        this.setState(() => {
-           return { error }
-        });
+        this.setState(() => ({error}));
     }
 
     render() {
@@ -74,11 +81,21 @@ class IndecisionApp extends React.Component {
         this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
         this.onPick = this.onPick.bind(this);
         this.onAddOption = this.onAddOption.bind(this);
+        this.onDeleteItem = this.onDeleteItem.bind(this);
         this.state = { items : [] }
     }
 
     handleDeleteOptions() {
-        this.setState(() => { return { items: []}; });
+        this.setState(() => ({ items: [] }));
+    };
+
+    onDeleteItem(itemToRemove) {
+        this.setState((prevState) => ({
+            items: prevState.items.filter((item) => {
+                return itemToRemove !== item;
+            })
+        }));
+        //console.log('onDeleteOption', item)
     }
 
     onPick() {
@@ -88,11 +105,7 @@ class IndecisionApp extends React.Component {
     onAddOption(item) {
         if(!item) { return 'Enter valid item' }
         if(this.state.items.indexOf(item) > -1) { return 'Item already exists' }
-        this.setState((prevState) => {
-           return {
-               items: prevState.items.concat(item)
-           }
-        });
+        this.setState((prevState) => ({items: prevState.items.concat(item)}));
     }
 
     render() {
@@ -104,7 +117,9 @@ class IndecisionApp extends React.Component {
             />
             <Options
                 items={this.state.items}
-                handleDeleteOptions={this.handleDeleteOptions}/>
+                handleDeleteOptions={this.handleDeleteOptions}
+                onDeleteItem = {this.onDeleteItem}
+            />
             <AddOption onAddOption = {this.onAddOption}/>
         </div>
     };
