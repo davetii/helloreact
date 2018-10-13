@@ -1,34 +1,43 @@
-class Header extends React.Component {
-    render() {
-        return(
-            <div>
-                <h1>{this.props.title}</h1>
-                <h2>{this.props.subtitle}</h2>
-            </div>
-        );
-    }
-}
+const Header = (props) => {
+    return(
+        <div>
+            <h1>{props.title}</h1>
+            <h2>{props.subtitle}</h2>
+        </div>
+    );
+};
 
-class Option extends React.Component {
-    render() {
-        return (
-            <div>{this.props.text}</div>
-        );
-    }
-}
+Header.defaultProps = { title: 'My default Title', subtitle: 'My default Subtite' }
 
-class Options extends React.Component {
-    render() {
-        return (
-            <div>
-                <button onClick={this.props.handleDeleteOptions}>Remove All</button>
-                {
-                    this.props.items.map((o) => <Option text={o} />)
-                }
-            </div>
-        );
-    }
-}
+const Option = (props) => {
+    return (
+        <div>{props.text}</div>
+    );
+};
+
+const Options = (props) => {
+    return (
+        <div>
+            <button onClick={props.handleDeleteOptions}>Remove All</button>
+            {
+                props.items.map((o) => <Option text={o} />)
+            }
+        </div>
+    );
+};
+
+const Action = (props) => {
+    return (
+        <div>
+            <button
+                onClick={props.onPick}
+                disabled={!props.hasOptions}
+            >
+                What should I do
+            </button>
+        </div>
+    );
+};
 
 class AddOption extends React.Component {
     constructor(props) {
@@ -54,21 +63,6 @@ class AddOption extends React.Component {
                     <button>Add Options</button>
                 </form>
                 {this.state.error}
-            </div>
-        );
-    }
-}
-
-class Action extends React.Component {
-    render() {
-        return (
-            <div>
-                <button
-                    onClick={this.props.onPick}
-                    disabled={!this.props.hasOptions}
-                >
-                    What should I do
-                </button>
             </div>
         );
     }
@@ -103,7 +97,7 @@ class IndecisionApp extends React.Component {
 
     render() {
         return <div>
-            <Header title ="Indecision App" subtitle="I am the subtitle"/>
+            <Header />
             <Action
                 hasOptions={this.state.items.length > 0}
                 onPick={this.onPick}
