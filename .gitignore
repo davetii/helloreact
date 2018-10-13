@@ -39,3 +39,5 @@ buildNumber.properties
 .settings
 .gradle
 yarn.lock
+/public/bundle.js
+package-lock.json
