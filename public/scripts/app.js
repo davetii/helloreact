@@ -75,7 +75,6 @@ var Options = function (_React$Component3) {
     _createClass(Options, [{
         key: "render",
         value: function render() {
-
             return React.createElement(
                 "div",
                 null,
@@ -97,29 +96,43 @@ var Options = function (_React$Component3) {
 var AddOption = function (_React$Component4) {
     _inherits(AddOption, _React$Component4);
 
-    function AddOption() {
+    function AddOption(props) {
         _classCallCheck(this, AddOption);
 
-        return _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).apply(this, arguments));
+        var _this4 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
+
+        _this4.onAddOption = _this4.onAddOption.bind(_this4);
+        _this4.state = { error: undefined };
+        return _this4;
     }
 
     _createClass(AddOption, [{
         key: "onAddOption",
         value: function onAddOption(e) {
-            alert(e.target.option.value);
+            e.preventDefault();
+            var error = this.props.onAddOption(e.target.option.value.trim());
+            e.target.option.value = '';
+            this.setState(function () {
+                return { error: error };
+            });
         }
     }, {
         key: "render",
         value: function render() {
             return React.createElement(
-                "form",
-                { onSubmit: this.onAddOption },
-                React.createElement("input", { type: "text", name: "option" }),
+                "div",
+                null,
                 React.createElement(
-                    "button",
-                    null,
-                    "Add Options"
-                )
+                    "form",
+                    { onSubmit: this.onAddOption },
+                    React.createElement("input", { type: "text", name: "option" }),
+                    React.createElement(
+                        "button",
+                        null,
+                        "Add Options"
+                    )
+                ),
+                this.state.error
             );
         }
     }]);
@@ -167,10 +180,8 @@ var IndecisionApp = function (_React$Component6) {
 
         _this6.handleDeleteOptions = _this6.handleDeleteOptions.bind(_this6);
         _this6.onPick = _this6.onPick.bind(_this6);
-        _this6.state = {
-            items: ['thing on1', 'thing 12', 'thing 21']
-            //items : []
-        };
+        _this6.onAddOption = _this6.onAddOption.bind(_this6);
+        _this6.state = { items: [] };
         return _this6;
     }
 
@@ -187,6 +198,21 @@ var IndecisionApp = function (_React$Component6) {
             alert(this.state.items[2]);
         }
     }, {
+        key: "onAddOption",
+        value: function onAddOption(item) {
+            if (!item) {
+                return 'Enter valid item';
+            }
+            if (this.state.items.indexOf(item) > -1) {
+                return 'Item already exists';
+            }
+            this.setState(function (prevState) {
+                return {
+                    items: prevState.items.concat(item)
+                };
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
@@ -200,7 +226,7 @@ var IndecisionApp = function (_React$Component6) {
                 React.createElement(Options, {
                     items: this.state.items,
                     handleDeleteOptions: this.handleDeleteOptions }),
-                React.createElement(AddOption, null)
+                React.createElement(AddOption, { onAddOption: this.onAddOption })
             );
         }
     }]);
