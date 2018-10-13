@@ -12,29 +12,17 @@ class Header extends React.Component {
 class Option extends React.Component {
     render() {
         return (
-            <div>
-              I am option {this.props.text}
-            </div>
+            <div>{this.props.text}</div>
         );
     }
 }
 
 class Options extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onRemoveAll = this.onRemoveAll.bind(this); // preferred method for a bind
-    }
-    onRemoveAll(e) {
-        e.preventDefault();
-        console.log(this.props.items);
-        //this.props.items = [];
-
-    }
     render() {
 
         return (
             <div>
-                <button onClick={this.onRemoveAll}>Remove All</button>
+                <button onClick={this.props.handleDeleteOptions}>Remove All</button>
                 {
                     this.props.items.map((o) => <Option text={o} />)
                 }
@@ -56,25 +44,48 @@ class AddOption extends React.Component {
 }
 
 class Action extends React.Component {
-    handlePick() {
-        console.log('handle pick');
-    }
     render() {
         return (
             <div>
-                <button onClick={this.handlePick}>What should I do</button>
+                <button
+                    onClick={this.props.onPick}
+                    disabled={!this.props.hasOptions}
+                >
+                    What should I do
+                </button>
             </div>
         );
     }
 }
 
 class IndecisionApp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+        this.onPick = this.onPick.bind(this);
+        this.state = {
+           items : ['thing on1', 'thing 12', 'thing 21']
+            //items : []
+        }
+    }
+
+    handleDeleteOptions() {
+        this.setState(() => { return { items: []}; });
+    }
+
+    onPick() {
+        alert(this.state.items[2]);
+    }
     render() {
-        let items = [1, 2, 3];
         return <div>
             <Header title ="Indecision App" subtitle="I am the subtitle"/>
-            <Action />
-            <Options items={items}/>
+            <Action
+                hasOptions={this.state.items.length > 0}
+                onPick={this.onPick}
+            />
+            <Options
+                items={this.state.items}
+                handleDeleteOptions={this.handleDeleteOptions}/>
             <AddOption />
         </div>
     };
