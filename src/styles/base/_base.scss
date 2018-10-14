@@ -1,0 +1,20 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  background: $dark-blue;
+}
+
+h1 {
+  font-size: $l-size;
+}
+
+body {
+  font-size: $m-size;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
