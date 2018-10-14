@@ -5,14 +5,7 @@ import Header from './Header'
 import Action from './Action'
 
 class IndecisionApp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-        this.onPick = this.onPick.bind(this);
-        this.onAddOption = this.onAddOption.bind(this);
-        this.onDeleteItem = this.onDeleteItem.bind(this);
-        this.state = { items : [] }
-    }
+    state = { items : [] }
 
     componentDidMount() {
         const items = JSON.parse(localStorage.getItem('items'));
@@ -30,11 +23,11 @@ class IndecisionApp extends React.Component {
         }
     }
 
-    handleDeleteOptions() {
+    handleDeleteOptions = () => {
         this.setState(() => ({ items: [] }));
     };
 
-    onDeleteItem(itemToRemove) {
+    onDeleteItem = (itemToRemove) => {
         this.setState((prevState) => ({
             items: prevState.items.filter((item) => {
                 return itemToRemove !== item;
@@ -42,11 +35,11 @@ class IndecisionApp extends React.Component {
         }));
     }
 
-    onPick() {
+    onPick = () => {
         alert(this.state.items[2]);
     }
 
-    onAddOption(item) {
+    onAddOption = (item) => {
         if(!item) { return 'Enter valid item' }
         if(this.state.items.indexOf(item) > -1) { return 'Item already exists' }
         this.setState((prevState) => ({items: prevState.items.concat(item)}));

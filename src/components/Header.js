@@ -1,6 +1,4 @@
 import React from 'react';
-import Option from "./Option";
-
 const Header = (props) => {
     return(
         <div>
@@ -9,8 +7,6 @@ const Header = (props) => {
         </div>
     );
 };
-
 Header.defaultProps = { title: 'My default Title', subtitle: 'My default subtitle' }
-
 export default Header;
 
