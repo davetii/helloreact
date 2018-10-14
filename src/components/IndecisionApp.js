@@ -3,9 +3,15 @@ import Options from "./Options";
 import AddOption from './AddOption'
 import Header from './Header'
 import Action from './Action'
+import ItemModal from './ItemModal'
 
 class IndecisionApp extends React.Component {
-    state = { items : [] }
+    state = {
+        items : [],
+        selectedItem: undefined
+    }
+
+
 
     componentDidMount() {
         const items = JSON.parse(localStorage.getItem('items'));
@@ -23,6 +29,12 @@ class IndecisionApp extends React.Component {
         }
     }
 
+    onCloseModal = () => {
+        this.setState(() => ({
+            selectedItem : undefined
+        }));
+    };
+
     handleDeleteOptions = () => {
         this.setState(() => ({ items: [] }));
     };
@@ -36,7 +48,11 @@ class IndecisionApp extends React.Component {
     }
 
     onPick = () => {
-        alert(this.state.items[2]);
+        const randomNum = Math.floor(Math.random() * this.state.items.length);
+        const item = this.state.items[randomNum];
+        this.setState(() => ({
+            selectedItem : item
+        }));
     }
 
     onAddOption = (item) => {
@@ -55,6 +71,10 @@ class IndecisionApp extends React.Component {
                 onDeleteItem = {this.onDeleteItem}
             />
             <AddOption onAddOption = {this.onAddOption}/>
+            <ItemModal
+                selectedItem = {this.state.selectedItem}
+                onCloseModal = {this.onCloseModal}
+            />
         </div>
     };
 }
